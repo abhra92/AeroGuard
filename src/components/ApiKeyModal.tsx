@@ -43,13 +43,13 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#141414]/40 backdrop-blur-xs"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-[#141414]/40 backdrop-blur-xs"
     >
-      <div className="relative w-full max-w-lg p-6 rounded-[16px] bg-[#f7f6f5] border border-black/15 space-y-5">
+      <div data-lenis-prevent className="relative w-full max-w-sm sm:max-w-lg max-h-[calc(100dvh-1.5rem)] overflow-y-auto p-4 sm:p-6 rounded-[16px] bg-[#f7f6f5] border border-black/15 space-y-3.5 sm:space-y-5">
         <button
           onClick={onClose}
           aria-label="Close dialog"
-          className="absolute top-4 right-4 p-1.5 rounded-[2px] text-[#7d7d7d] hover:text-[#141414] focus-ring transition-colors"
+          className="absolute top-4 right-4 p-1.5 rounded-[2px] text-[#666666] hover:text-[#141414] focus-ring transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -62,20 +62,20 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
             <h3 id="modal-title" className="text-[17px] font-medium text-[#141414]">
               Language Model Configuration ($0 Cost Tiers)
             </h3>
-            <p className="text-[13px] text-[#7d7d7d]">
+            <p className="text-[13px] text-[#666666]">
               Optional direct API keys stored strictly in your browser local storage
             </p>
           </div>
         </div>
 
-        <div className="p-3.5 rounded-[10px] bg-[#efefef] border border-black/10 text-[13px] text-[#141414] flex items-start gap-2.5">
+        <div className="p-2.5 sm:p-3.5 rounded-[10px] bg-[#efefef] border border-black/10 text-[13px] text-[#141414] flex items-start gap-2.5">
           <ShieldCheck className="w-4 h-4 mt-0.5 shrink-0 text-[#2200ff]" />
           <div className="leading-[1.5]">
             <span className="font-medium">Offline Rule Engine Active:</span> If you leave these fields blank, AeroGuard functions immediately using our built-in scientific heuristic engine.
           </div>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           <div>
             <div className="flex items-center justify-between mb-1">
               <label htmlFor="gemini-key" className="text-[13px] font-medium text-[#141414]">
@@ -98,7 +98,7 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
               onChange={(e) => setGeminiKey(e.target.value)}
               className="w-full px-3 py-2 input-base text-[13px] font-mono-tech focus-ring transition-colors"
             />
-            <p className="mt-1 text-[11px] text-[#7d7d7d]">
+            <p className="mt-1 text-[11px] text-[#666666]">
               15 requests/minute, 1,500 requests/day free. No credit card required.
             </p>
           </div>
@@ -125,13 +125,13 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
               onChange={(e) => setGroqKey(e.target.value)}
               className="w-full px-3 py-2 input-base text-[13px] font-mono-tech focus-ring transition-colors"
             />
-            <p className="mt-1 text-[11px] text-[#7d7d7d]">
+            <p className="mt-1 text-[11px] text-[#666666]">
               30 requests/minute free tier.
             </p>
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-2 pt-3 border-t border-black/10">
+        <div className="flex items-center justify-end gap-2 pt-2.5 sm:pt-3 border-t border-black/10">
           <button
             onClick={onClose}
             className="btn-outlined text-[14px] focus-ring"

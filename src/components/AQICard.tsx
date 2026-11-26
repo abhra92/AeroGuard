@@ -43,7 +43,7 @@ export function AQICard({ data, loading }: AQICardProps) {
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-black/10">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-[11px] font-mono-tech text-[#7d7d7d] uppercase tracking-wider">
+            <span className="text-[11px] font-mono-tech text-[#666666] uppercase tracking-wider">
               Atmospheric Reading · {data.city}
             </span>
           </div>
@@ -55,7 +55,7 @@ export function AQICard({ data, loading }: AQICardProps) {
               <span className="inline-block px-2.5 py-0.5 rounded-[2px] text-[12px] font-medium bg-[#141414] text-white">
                 {meta.label}
               </span>
-              <p className="text-[12px] text-[#7d7d7d] font-mono-tech">US AQI Standard</p>
+              <p className="text-[12px] text-[#666666] font-mono-tech">US AQI Standard</p>
             </div>
           </div>
         </div>
@@ -63,22 +63,22 @@ export function AQICard({ data, loading }: AQICardProps) {
         {/* Ambient Ground Metrics */}
         <div className="flex flex-wrap items-center gap-4 sm:gap-6 p-3.5 panel-inset text-[13px]">
           <div className="flex items-center gap-2">
-            <Thermometer className="w-4 h-4 text-[#7d7d7d] shrink-0" />
+            <Thermometer className="w-4 h-4 text-[#666666] shrink-0" />
             <div>
               <span className="font-medium text-[#141414] font-mono-tech tabular-nums text-[15px]">
                 {current.temperature}°C
               </span>
-              <div className="text-[11px] text-[#7d7d7d]">Surface Temp</div>
+              <div className="text-[11px] text-[#666666]">Surface Temp</div>
             </div>
           </div>
           <div className="w-px h-7 bg-black/10 hidden sm:block" />
           <div className="flex items-center gap-2">
-            <Droplets className="w-4 h-4 text-[#7d7d7d] shrink-0" />
+            <Droplets className="w-4 h-4 text-[#666666] shrink-0" />
             <div>
               <span className="font-medium text-[#141414] font-mono-tech tabular-nums text-[15px]">
                 {current.humidity}%
               </span>
-              <div className="text-[11px] text-[#7d7d7d]">Humidity</div>
+              <div className="text-[11px] text-[#666666]">Humidity</div>
             </div>
           </div>
           <div className="w-px h-7 bg-black/10 hidden sm:block" />
@@ -88,7 +88,7 @@ export function AQICard({ data, loading }: AQICardProps) {
               <span className="font-medium text-[#141414] font-mono-tech tabular-nums text-[15px]">
                 {current.windSpeed} km/h
               </span>
-              <div className="text-[11px] text-[#7d7d7d]">Wind Speed</div>
+              <div className="text-[11px] text-[#666666]">Wind Speed</div>
             </div>
           </div>
         </div>
@@ -101,7 +101,7 @@ export function AQICard({ data, loading }: AQICardProps) {
             <ShieldAlert className="w-4 h-4 text-[#2200ff]" />
             <span>Outdoor Exposure Protocol</span>
           </div>
-          <p className="text-[14px] text-[#7d7d7d] leading-[1.5]">
+          <p className="text-[14px] text-[#666666] leading-[1.5]">
             {meta.maskAdvice}
           </p>
         </div>
@@ -111,7 +111,7 @@ export function AQICard({ data, loading }: AQICardProps) {
             <AlertCircle className="w-4 h-4 text-[#141414]" />
             <span>Ventilation Guidance</span>
           </div>
-          <p className="text-[14px] text-[#7d7d7d] leading-[1.5]">
+          <p className="text-[14px] text-[#666666] leading-[1.5]">
             {meta.ventilationAdvice}
           </p>
         </div>
@@ -119,14 +119,14 @@ export function AQICard({ data, loading }: AQICardProps) {
 
       {/* Specific Pollutants Breakdown */}
       <div>
-        <div className="text-[11px] font-medium text-[#7d7d7d] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
-          <Gauge className="w-3.5 h-3.5 text-[#7d7d7d]" />
+        <div className="text-[11px] font-medium text-[#666666] uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+          <Gauge className="w-3.5 h-3.5 text-[#666666]" />
           <span>Measured Pollutant Concentrations</span>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5">
           {pollutants.map((p) => (
             <div key={p.label} className="p-3 panel-inset">
-              <div className="text-[11px] text-[#7d7d7d] truncate">{p.label}</div>
+              <div className="text-[11px] text-[#666666] truncate">{p.label}</div>
               <div className="text-[15px] font-medium text-[#141414] font-mono-tech tabular-nums mt-0.5">
                 {p.value}
               </div>

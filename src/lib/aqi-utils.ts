@@ -118,3 +118,38 @@ export const PRESET_SMOG_HOTSPOTS = [
   { name: 'Krakow', country: 'Poland', lat: 50.06, lon: 19.94, typicalWinterIssue: 'Valley topography with coal/wood residential heating inversion smog' },
   { name: 'London', country: 'United Kingdom', lat: 51.50, lon: -0.12, typicalWinterIssue: 'Cold anticyclonic stagnation trapping diesel particulate and urban NO2' },
 ];
+
+// Urban areas in India, grouped by state. Coordinates are approximate city centres.
+// Examples only, not an exhaustive official classification (Census 2011 towns).
+export const INDIA_URBAN_AREAS: { name: string; state: string; country: string; lat: number; lon: number }[] = [
+  { name: 'Kolkata', state: 'West Bengal', country: 'India', lat: 22.57, lon: 88.36 },
+  { name: 'Howrah', state: 'West Bengal', country: 'India', lat: 22.59, lon: 88.31 },
+  { name: 'Durgapur', state: 'West Bengal', country: 'India', lat: 23.52, lon: 87.31 },
+  { name: 'Asansol', state: 'West Bengal', country: 'India', lat: 23.68, lon: 86.98 },
+  { name: 'Haldia', state: 'West Bengal', country: 'India', lat: 22.03, lon: 88.06 },
+  { name: 'Mumbai', state: 'Maharashtra', country: 'India', lat: 19.08, lon: 72.88 },
+  { name: 'Pune', state: 'Maharashtra', country: 'India', lat: 18.52, lon: 73.86 },
+  { name: 'Nagpur', state: 'Maharashtra', country: 'India', lat: 21.15, lon: 79.09 },
+  { name: 'Nashik', state: 'Maharashtra', country: 'India', lat: 19.997, lon: 73.79 },
+  { name: 'Bengaluru', state: 'Karnataka', country: 'India', lat: 12.97, lon: 77.59 },
+  { name: 'Mysuru', state: 'Karnataka', country: 'India', lat: 12.30, lon: 76.64 },
+  { name: 'Mangaluru', state: 'Karnataka', country: 'India', lat: 12.87, lon: 74.88 },
+  { name: 'Chennai', state: 'Tamil Nadu', country: 'India', lat: 13.08, lon: 80.27 },
+  { name: 'Coimbatore', state: 'Tamil Nadu', country: 'India', lat: 11.00, lon: 76.96 },
+  { name: 'Madurai', state: 'Tamil Nadu', country: 'India', lat: 9.93, lon: 78.12 },
+  { name: 'Hyderabad', state: 'Telangana', country: 'India', lat: 17.39, lon: 78.49 },
+  { name: 'Warangal', state: 'Telangana', country: 'India', lat: 17.98, lon: 79.60 },
+  { name: 'Ahmedabad', state: 'Gujarat', country: 'India', lat: 23.02, lon: 72.57 },
+  { name: 'Surat', state: 'Gujarat', country: 'India', lat: 21.17, lon: 72.83 },
+  { name: 'Vadodara', state: 'Gujarat', country: 'India', lat: 22.31, lon: 73.18 },
+  { name: 'Lucknow', state: 'Uttar Pradesh', country: 'India', lat: 26.85, lon: 80.95 },
+  { name: 'Kanpur', state: 'Uttar Pradesh', country: 'India', lat: 26.45, lon: 80.33 },
+  { name: 'Noida', state: 'Uttar Pradesh', country: 'India', lat: 28.54, lon: 77.39 },
+  { name: 'Jaipur', state: 'Rajasthan', country: 'India', lat: 26.91, lon: 75.79 },
+  { name: 'Jodhpur', state: 'Rajasthan', country: 'India', lat: 26.24, lon: 73.02 },
+  { name: 'Udaipur', state: 'Rajasthan', country: 'India', lat: 24.58, lon: 73.71 },
+  { name: 'Kochi', state: 'Kerala', country: 'India', lat: 9.93, lon: 76.27 },
+  { name: 'Kozhikode', state: 'Kerala', country: 'India', lat: 11.25, lon: 75.78 },
+  { name: 'Thiruvananthapuram', state: 'Kerala', country: 'India', lat: 8.52, lon: 76.94 },
+  { name: 'Delhi NCR', state: 'Delhi', country: 'India', lat: 28.61, lon: 77.21 },
+];

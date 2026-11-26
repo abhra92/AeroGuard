@@ -72,7 +72,7 @@ export default function RoutinePlannerPage() {
       particleCount: 50,
       spread: 60,
       origin: { y: 0.7 },
-      colors: ['#2200ff', '#141414', '#7d7d7d'],
+      colors: ['#2200ff', '#141414', '#666666'],
     });
     addImpact(plan.totalPmAvoidedMicrograms, plan.cigaretteEquivalenceAvoided, plan.co2OffsetKg);
     setAdopted(true);
@@ -82,13 +82,13 @@ export default function RoutinePlannerPage() {
     <div className="space-y-8 sm:space-y-9">
       {/* Page Title */}
       <div className="space-y-2">
-        <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d]">
+        <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#666666]">
           Diurnal Exposure Optimization
         </p>
         <h1 className="text-[32px] sm:text-[48px] leading-[1.12] tracking-[-0.04em] font-medium text-[#141414]">
           Personalized <span className="text-[#2200ff]">daily routine</span> planner
         </h1>
-        <p className="text-[16px] leading-[1.5] text-[#7d7d7d] max-w-3xl">
+        <p className="text-[16px] leading-[1.5] text-[#666666] max-w-3xl">
           Coordinate departures and outdoor activity around nocturnal radiation inversion traps to shield sensitive airways and reduce travel emissions.
         </p>
       </div>
@@ -97,10 +97,10 @@ export default function RoutinePlannerPage() {
       <div className="p-5 sm:p-6 rounded-[16px] card-base space-y-6">
         <div className="flex flex-col gap-2 border-b border-black/10 pb-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
-            <Users className="w-4 h-4 text-[#7d7d7d]" />
+            <Users className="w-4 h-4 text-[#666666]" />
             <h2 className="min-w-0 break-words text-[17px] font-medium text-[#141414]">Household Profile &amp; Vulnerabilities</h2>
           </div>
-          <span className="text-[12px] font-mono-tech text-[#7d7d7d]">Saved locally</span>
+          <span className="text-[12px] font-mono-tech text-[#666666]">Saved locally</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -164,7 +164,7 @@ export default function RoutinePlannerPage() {
                       {isChecked && <CheckCircle2 className="w-3 h-3" />}
                     </div>
                   </div>
-                  <p className="text-[12px] text-[#7d7d7d] mt-1 leading-snug">{opt.desc}</p>
+                  <p className="text-[12px] text-[#666666] mt-1 leading-snug">{opt.desc}</p>
                 </button>
               );
             })}
@@ -175,7 +175,7 @@ export default function RoutinePlannerPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
           <div>
             <label htmlFor="commute-mode" className="text-[13px] font-medium text-[#141414] flex items-center gap-1.5 mb-1.5">
-              <Car className="w-4 h-4 text-[#7d7d7d]" /> Primary Commute Mode
+              <Car className="w-4 h-4 text-[#666666]" /> Primary Commute Mode
             </label>
             <select
               id="commute-mode"
@@ -190,7 +190,7 @@ export default function RoutinePlannerPage() {
               ))}
             </select>
             <div className="mt-2.5 flex flex-wrap items-center gap-2">
-              <label htmlFor="commute-km" className="w-full text-[13px] text-[#7d7d7d] sm:w-auto">Daily travel distance:</label>
+              <label htmlFor="commute-km" className="w-full text-[13px] text-[#666666] sm:w-auto">Daily travel distance:</label>
               <input
                 id="commute-km"
                 type="number"
@@ -200,13 +200,13 @@ export default function RoutinePlannerPage() {
                 onChange={(e) => updateProfile({ dailyCommuteKm: parseInt(e.target.value) || 0 })}
                 className="w-20 px-2 py-1 input-base text-[14px] text-center font-mono-tech focus-ring"
               />
-              <span className="text-[13px] text-[#7d7d7d]">km</span>
+              <span className="text-[13px] text-[#666666]">km</span>
             </div>
           </div>
 
           <div>
             <label htmlFor="heating-source" className="text-[13px] font-medium text-[#141414] flex items-center gap-1.5 mb-1.5">
-              <Flame className="w-4 h-4 text-[#7d7d7d]" /> Kitchen &amp; Space Heating Source
+              <Flame className="w-4 h-4 text-[#666666]" /> Kitchen &amp; Space Heating Source
             </label>
             <select
               id="heating-source"
@@ -220,7 +220,7 @@ export default function RoutinePlannerPage() {
                 </option>
               ))}
             </select>
-            <p className="text-[12px] text-[#7d7d7d] mt-2">
+            <p className="text-[12px] text-[#666666] mt-2">
               Induction cooktops eliminate nitrogen dioxide and combustion particulate from indoor spaces.
             </p>
           </div>
@@ -248,7 +248,7 @@ export default function RoutinePlannerPage() {
                 <span className="px-2 py-0.5 rounded-[2px] bg-[#141414] text-white text-[12px] font-mono-tech">
                   {plan.city}
                 </span>
-                <span className="text-[13px] text-[#7d7d7d] font-mono-tech">{plan.date}</span>
+                <span className="text-[13px] text-[#666666] font-mono-tech">{plan.date}</span>
               </div>
               <h3 className="text-[20px] font-medium text-[#141414] mt-1.5 tracking-[-0.02em]">
                 {plan.headlineSummary}
@@ -284,7 +284,7 @@ export default function RoutinePlannerPage() {
                 <div className="text-[16px] font-medium text-[#141414] font-mono-tech tabular-nums">
                   {plan.totalPmAvoidedMicrograms} µg PM2.5
                 </div>
-                <div className="text-[12px] text-[#7d7d7d]">Total Inhalation Avoided</div>
+                <div className="text-[12px] text-[#666666]">Total Inhalation Avoided</div>
               </div>
             </div>
 
@@ -294,17 +294,17 @@ export default function RoutinePlannerPage() {
                 <div className="text-[16px] font-medium text-[#141414] font-mono-tech tabular-nums">
                   {plan.cigaretteEquivalenceAvoided} Cigarettes
                 </div>
-                <div className="text-[12px] text-[#7d7d7d]">Particulate Damage Avoided</div>
+                <div className="text-[12px] text-[#666666]">Particulate Damage Avoided</div>
               </div>
             </div>
 
             <div className="p-4 panel-inset flex items-center gap-3">
-              <Car className="w-5 h-5 text-[#7d7d7d] shrink-0" />
+              <Car className="w-5 h-5 text-[#666666] shrink-0" />
               <div>
                 <div className="text-[16px] font-medium text-[#141414] font-mono-tech tabular-nums">
                   {plan.co2OffsetKg} kg CO₂e
                 </div>
-                <div className="text-[12px] text-[#7d7d7d]">Tailpipe Carbon Prevented</div>
+                <div className="text-[12px] text-[#666666]">Tailpipe Carbon Prevented</div>
               </div>
             </div>
           </div>
@@ -317,7 +317,7 @@ export default function RoutinePlannerPage() {
 
           {/* Hour-by-Hour Activity Timeline */}
           <div className="space-y-3">
-            <h4 className="text-[12px] font-medium uppercase tracking-wider text-[#7d7d7d]">
+            <h4 className="text-[12px] font-medium uppercase tracking-wider text-[#666666]">
               Hour-by-Hour Mitigation Actions
             </h4>
 
@@ -340,7 +340,7 @@ export default function RoutinePlannerPage() {
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-1.5">
                       <div className="flex items-center gap-2">
                         <span className="flex max-w-full items-center gap-1 text-[12px] font-mono-tech text-[#141414] bg-[#efefef] px-2 py-0.5 rounded-[2px] border border-black/10">
-                          <Clock className="w-3 h-3 text-[#7d7d7d]" /> {act.timeSlot}
+                          <Clock className="w-3 h-3 text-[#666666]" /> {act.timeSlot}
                         </span>
                         <h5 className="min-w-0 break-words text-[15px] font-medium text-[#141414]">{act.title}</h5>
                       </div>
@@ -355,7 +355,7 @@ export default function RoutinePlannerPage() {
                               ? 'bg-[#141414] text-white'
                               : isCaution
                               ? 'bg-[#e7e7e7] text-[#141414]'
-                              : 'bg-[#efefef] text-[#7d7d7d]'
+                              : 'bg-[#efefef] text-[#666666]'
                           }`}
                         >
                           {act.riskLevel}
@@ -367,7 +367,7 @@ export default function RoutinePlannerPage() {
                       {act.recommendation}
                     </p>
 
-                    <div className="mt-2 text-[12px] text-[#7d7d7d]">
+                    <div className="mt-2 text-[12px] text-[#666666]">
                       <span className="font-medium text-[#141414]">Impact:</span> {act.emissionImpact}
                     </div>
                   </div>

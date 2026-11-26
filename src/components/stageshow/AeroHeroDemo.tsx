@@ -106,7 +106,7 @@ export function AeroHeroDemo({ theme = 'dark' }: AeroHeroDemoProps) {
                   {!isCompact && (
                     <aside className="ag-hero-sidebar">
                       <div className="ag-hero-brand">
-                        <Wind className="w-3.5 h-3.5 text-[#2200ff] shrink-0" />
+                        <img src="/icon.svg" alt="AeroGuard logo" className="w-3.5 h-3.5 rounded-[2px] shrink-0" />
                         <Text className="text-[11px] font-bold">AeroGuard</Text>
                       </div>
                       <div className="ag-hero-nav-item" data-active="true">
@@ -132,7 +132,7 @@ export function AeroHeroDemo({ theme = 'dark' }: AeroHeroDemoProps) {
                     <div className="ag-hero-top">
                       <div className="ag-hero-aqi-block">
                         <div className="ag-hero-aqi-num">
-                          <Count value={s.aqi} />
+                          <Count role="img" value={s.aqi} />
                         </div>
                         <div>
                           <div className="ag-hero-city">
@@ -234,7 +234,7 @@ export function AeroHeroDemo({ theme = 'dark' }: AeroHeroDemoProps) {
                   </div>
                   <div className="ag-hero-sat-metric">
                     <span className="ag-hero-sat-val">
-                      <Count value={s.indoorPm25} />
+                      <Count role="img" value={s.indoorPm25} />
                     </span>
                     <span className="ag-hero-sat-unit">µg/m³</span>
                   </div>

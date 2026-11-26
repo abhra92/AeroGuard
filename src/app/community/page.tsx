@@ -114,7 +114,7 @@ export default function CommunityPage() {
         particleCount: 40,
         spread: 60,
         origin: { y: 0.8 },
-        colors: ['#2200ff', '#141414', '#7d7d7d'],
+        colors: ['#2200ff', '#141414', '#666666'],
       });
     }
   };
@@ -129,13 +129,13 @@ export default function CommunityPage() {
     <div className="space-y-9">
       {/* Page Header */}
       <div className="space-y-2">
-        <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d]">
+        <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#666666]">
           Public Health &amp; Local Advocacy
         </p>
         <h1 className="text-[32px] sm:text-[48px] leading-[1.12] tracking-[-0.04em] font-medium text-[#141414]">
           Community <span className="text-[#2200ff]">action</span> &amp; advocacy hub
         </h1>
-        <p className="text-[16px] leading-[1.5] text-[#7d7d7d] max-w-3xl">
+        <p className="text-[16px] leading-[1.5] text-[#666666] max-w-3xl">
           Clean air is a shared public good. Pledge targeted local actions, coordinate anti-idling outside schools, and share verified community advocacy notices.
         </p>
       </div>
@@ -144,10 +144,10 @@ export default function CommunityPage() {
       <div className="space-y-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <h2 className="min-w-0 text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414] flex items-center gap-2">
-            <Award className="w-5 h-5 text-[#7d7d7d]" />
+            <Award className="w-5 h-5 text-[#666666]" />
             <span>Neighborhood Action Pledges</span>
           </h2>
-          <span className="text-[13px] font-mono-tech text-[#7d7d7d]">
+          <span className="text-[13px] font-mono-tech text-[#666666]">
             {completedActions.length} of {COMMUNITY_PLEDGES.length} Pledged
           </span>
         </div>
@@ -183,18 +183,18 @@ export default function CommunityPage() {
                     </button>
                   </div>
 
-                  <p className="text-[14px] text-[#7d7d7d] leading-[1.5] mb-4">
+                  <p className="text-[14px] text-[#666666] leading-[1.5] mb-4">
                     {pledge.impactDescription}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-black/10 flex flex-col gap-2 text-[12px] text-[#7d7d7d] sm:flex-row sm:items-center sm:justify-between">
+                <div className="pt-3 border-t border-black/10 flex flex-col gap-2 text-[12px] text-[#666666] sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-mono-tech">
                     <span className="text-[#2200ff]">-{pledge.pmAvoidedUg} µg PM</span>
                     <span className="text-[#141414]">-{pledge.co2SavedKg} kg CO₂</span>
                   </div>
                   <span className="flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5 text-[#7d7d7d]" />
+                    <Users className="w-3.5 h-3.5 text-[#666666]" />
                     <span>{pledge.participantsCount + (isPledged ? 1 : 0)} participants</span>
                   </span>
                 </div>
@@ -208,10 +208,10 @@ export default function CommunityPage() {
       <div className="space-y-4 pt-2">
         <div>
           <h2 className="text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414] flex items-center gap-2">
-            <FileText className="w-5 h-5 text-[#7d7d7d]" />
+            <FileText className="w-5 h-5 text-[#666666]" />
             <span>Community Advocacy Templates</span>
           </h2>
-          <p className="text-[15px] text-[#7d7d7d]">
+          <p className="text-[15px] text-[#666666]">
             Share in neighborhood communication channels, housing society meetings, or school parent-teacher forums
           </p>
         </div>
@@ -235,7 +235,7 @@ export default function CommunityPage() {
                   </button>
                 </div>
 
-                <pre className="p-3.5 panel-inset break-words [overflow-wrap:anywhere] text-[13px] text-[#141414] font-mono-tech whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto">
+                <pre data-lenis-prevent tabIndex={0} aria-label="Template text" className="p-3.5 panel-inset break-words [overflow-wrap:anywhere] text-[13px] text-[#141414] font-mono-tech whitespace-pre-wrap leading-relaxed max-h-56 overflow-y-auto">
                   {tmpl.content}
                 </pre>
               </div>

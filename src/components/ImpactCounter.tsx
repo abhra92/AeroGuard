@@ -13,7 +13,7 @@ export function ImpactCounter() {
       particleCount: 50,
       spread: 60,
       origin: { y: 0.8 },
-      colors: ['#2200ff', '#141414', '#7d7d7d'],
+      colors: ['#2200ff', '#141414', '#666666'],
     });
     addImpact(180, 0.4, 1.2);
   };
@@ -23,12 +23,12 @@ export function ImpactCounter() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <Award className="w-5 h-5 text-[#7d7d7d]" />
+            <Award className="w-5 h-5 text-[#666666]" />
             <h3 className="text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
               Personal &amp; Community Exposure Scoreboard
             </h3>
           </div>
-          <p className="text-[14px] text-[#7d7d7d] mt-0.5">
+          <p className="text-[14px] text-[#666666] mt-0.5">
             Verified reductions in personal particulate inhalation and household travel emissions
           </p>
         </div>
@@ -44,56 +44,56 @@ export function ImpactCounter() {
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5">
         <div className="p-4 panel-inset space-y-1">
-          <div className="flex items-center gap-1.5 text-[12px] text-[#7d7d7d] font-medium">
+          <div className="flex items-center gap-1.5 text-[12px] text-[#666666] font-medium">
             <ShieldCheck className="w-4 h-4 text-[#2200ff]" />
             <span>PM2.5 Avoided</span>
           </div>
           <div className="text-[24px] sm:text-[28px] font-medium text-[#141414] font-mono-tech tabular-nums">
             {cumulativeImpact.pm25AvoidedMicrograms.toLocaleString()}{' '}
-            <span className="text-[12px] font-normal text-[#7d7d7d]">µg</span>
+            <span className="text-[12px] font-normal text-[#666666]">µg</span>
           </div>
-          <p className="text-[11px] text-[#7d7d7d] leading-snug">
+          <p className="text-[11px] text-[#666666] leading-snug">
             Fine soot prevented from deep alveolar lung entry
           </p>
         </div>
 
         <div className="p-4 panel-inset space-y-1">
-          <div className="flex items-center gap-1.5 text-[12px] text-[#7d7d7d] font-medium">
+          <div className="flex items-center gap-1.5 text-[12px] text-[#666666] font-medium">
             <HeartPulse className="w-4 h-4 text-[#141414]" />
             <span>Cigarette Equiv. Avoided</span>
           </div>
           <div className="text-[24px] sm:text-[28px] font-medium text-[#141414] font-mono-tech tabular-nums">
             {cumulativeImpact.cigarettesAvoided}{' '}
-            <span className="text-[12px] font-normal text-[#7d7d7d]">cigs</span>
+            <span className="text-[12px] font-normal text-[#666666]">cigs</span>
           </div>
-          <p className="text-[11px] text-[#7d7d7d] leading-snug">
+          <p className="text-[11px] text-[#666666] leading-snug">
             Berkeley Earth rule (22µg/m³ 24h = 1 cigarette)
           </p>
         </div>
 
         <div className="p-4 panel-inset space-y-1">
-          <div className="flex items-center gap-1.5 text-[12px] text-[#7d7d7d] font-medium">
-            <Leaf className="w-4 h-4 text-[#7d7d7d]" />
+          <div className="flex items-center gap-1.5 text-[12px] text-[#666666] font-medium">
+            <Leaf className="w-4 h-4 text-[#666666]" />
             <span>CO₂e Prevented</span>
           </div>
           <div className="text-[24px] sm:text-[28px] font-medium text-[#141414] font-mono-tech tabular-nums">
             {cumulativeImpact.co2SavedKg}{' '}
-            <span className="text-[12px] font-normal text-[#7d7d7d]">kg</span>
+            <span className="text-[12px] font-normal text-[#666666]">kg</span>
           </div>
-          <p className="text-[11px] text-[#7d7d7d] leading-snug">
+          <p className="text-[11px] text-[#666666] leading-snug">
             Anti-idling, public transit, and clean heating
           </p>
         </div>
 
         <div className="p-4 panel-inset space-y-1">
-          <div className="flex items-center gap-1.5 text-[12px] text-[#7d7d7d] font-medium">
+          <div className="flex items-center gap-1.5 text-[12px] text-[#666666] font-medium">
             <Award className="w-4 h-4 text-[#2200ff]" />
             <span>Verified Choices</span>
           </div>
           <div className="text-[24px] sm:text-[28px] font-medium text-[#2200ff] font-mono-tech tabular-nums">
             {cumulativeImpact.actionsCompleted}
           </div>
-          <p className="text-[11px] text-[#7d7d7d] leading-snug">
+          <p className="text-[11px] text-[#666666] leading-snug">
             Pledges and routine habits logged
           </p>
         </div>

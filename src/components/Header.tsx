@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import {
   Wind,
@@ -16,7 +17,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useAppStore } from '@/lib/store';
-import { PRESET_SMOG_HOTSPOTS } from '@/lib/aqi-utils';
+import { PRESET_SMOG_HOTSPOTS, INDIA_URBAN_AREAS } from '@/lib/aqi-utils';
 import { ApiKeyModal } from './ApiKeyModal';
 
 export function Header() {
@@ -94,6 +95,43 @@ export function Header() {
     );
   };
 
+  const renderLocationOption = (spot: {
+    name: string;
+    subtitle: string;
+    lat: number;
+    lon: number;
+    country: string;
+  }) => {
+    const isSelected = spot.name === currentLocation.name;
+    return (
+      <button
+        key={spot.name}
+        role="option"
+        aria-selected={isSelected}
+        onClick={() => {
+          setLocation({
+            name: spot.name,
+            country: spot.country,
+            lat: spot.lat,
+            lon: spot.lon,
+          });
+          setIsLocDropdownOpen(false);
+        }}
+        className={`w-full text-left px-2.5 py-2 rounded-[8px] text-[13px] flex items-center justify-between focus-ring transition-colors ${
+          isSelected
+            ? 'bg-[#efefef] text-[#141414] font-medium'
+            : 'text-[#141414] hover:bg-[#efefef]'
+        }`}
+      >
+        <div>
+          <div className="text-[#141414]">{spot.name}</div>
+          <div className="text-[11px] text-[#666666]">{spot.subtitle}</div>
+        </div>
+        {isSelected && <Check className="w-3.5 h-3.5 text-[#2200ff] shrink-0" />}
+      </button>
+    );
+  };
+
   return (
     <>
       <header className="sticky top-0 z-40 header-bar">
@@ -103,13 +141,18 @@ export function Header() {
             href="/"
             className="flex items-center gap-2 shrink-0 focus-ring rounded-[2px] py-1"
           >
-            <span className="w-6 h-6 rounded-[2px] bg-[#141414] flex items-center justify-center text-white shrink-0">
-              <Wind className="w-3.5 h-3.5" />
-            </span>
+            <Image
+              src="/icon.svg"
+              alt="AeroGuard logo"
+              width={24}
+              height={24}
+              className="w-6 h-6 rounded-[2px] shrink-0 object-contain"
+              priority
+            />
             <span className="font-medium text-[15px] tracking-tight text-[#141414]">
               AeroGuard
             </span>
-            <span className="hidden sm:inline-block text-[11px] font-mono-tech text-[#7d7d7d] pl-1 border-l border-black/10">
+            <span className="hidden sm:inline-block text-[11px] font-mono-tech text-[#666666] pl-1 border-l border-black/10">
               IAQ
             </span>
           </Link>
@@ -149,7 +192,7 @@ export function Header() {
                 <span className="hidden max-w-[150px] truncate sm:inline-block lg:max-w-[96px] xl:max-w-[150px]">
                   {currentLocation.name}
                 </span>
-                <ChevronDown className="w-3 h-3 text-[#7d7d7d] shrink-0" />
+                <ChevronDown className="w-3 h-3 text-[#666666] shrink-0" />
               </button>
 
               {isLocDropdownOpen && (
@@ -159,7 +202,7 @@ export function Header() {
                   style={{ boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' }}
                 >
                   <div className="p-2 border-b border-black/10 flex items-center justify-between">
-                    <span className="text-[11px] font-medium text-[#7d7d7d] uppercase tracking-wider">
+                    <span className="text-[11px] font-medium text-[#666666] uppercase tracking-wider">
                       Select Urban Area
                     </span>
                     <button
@@ -172,37 +215,35 @@ export function Header() {
                     </button>
                   </div>
 
-                  <div className="max-h-60 overflow-y-auto py-1 space-y-1">
-                    {PRESET_SMOG_HOTSPOTS.map((spot) => {
-                      const isSelected = spot.name === currentLocation.name;
-                      return (
-                        <button
-                          key={spot.name}
-                          role="option"
-                          aria-selected={isSelected}
-                          onClick={() => {
-                            setLocation({
-                              name: spot.name,
-                              country: spot.country,
-                              lat: spot.lat,
-                              lon: spot.lon,
-                            });
-                            setIsLocDropdownOpen(false);
-                          }}
-                          className={`w-full text-left px-2.5 py-2 rounded-[8px] text-[13px] flex items-center justify-between focus-ring transition-colors ${
-                            isSelected
-                              ? 'bg-[#efefef] text-[#141414] font-medium'
-                              : 'text-[#141414] hover:bg-[#efefef]'
-                          }`}
-                        >
-                          <div>
-                            <div className="text-[#141414]">{spot.name}</div>
-                            <div className="text-[11px] text-[#7d7d7d]">{spot.country}</div>
-                          </div>
-                          {isSelected && <Check className="w-3.5 h-3.5 text-[#2200ff] shrink-0" />}
-                        </button>
-                      );
-                    })}
+                  <div data-lenis-prevent className="max-h-60 overflow-y-auto py-1 space-y-1">
+                    <div className="px-2.5 pt-1 pb-0.5 text-[10px] font-medium text-[#666666] uppercase tracking-wider">
+                      Urban areas in India
+                    </div>
+                    {INDIA_URBAN_AREAS.map((spot) =>
+                      renderLocationOption({
+                        name: spot.name,
+                        subtitle: spot.state,
+                        lat: spot.lat,
+                        lon: spot.lon,
+                        country: spot.country,
+                      })
+                    )}
+                    <div className="px-2.5 pt-1 pb-0.5 text-[10px] text-[#666666]">
+                      Examples only, not an official list.
+                    </div>
+
+                    <div className="px-2.5 pt-2 pb-0.5 text-[10px] font-medium text-[#666666] uppercase tracking-wider">
+                      International hotspots
+                    </div>
+                    {PRESET_SMOG_HOTSPOTS.map((spot) =>
+                      renderLocationOption({
+                        name: spot.name,
+                        subtitle: spot.country,
+                        lat: spot.lat,
+                        lon: spot.lon,
+                        country: spot.country,
+                      })
+                    )}
                   </div>
                 </div>
               )}
@@ -224,7 +265,7 @@ export function Header() {
         </div>
 
         {/* Mobile Navigation Bar */}
-        <div className="grid grid-cols-5 gap-1 px-2 py-1.5 border-t border-black/10 bg-[#f7f6f5] text-[11px] lg:hidden">
+        <nav aria-label="Mobile Navigation" className="grid grid-cols-5 gap-1 px-2 py-1.5 border-t border-black/10 bg-[#f7f6f5] text-[11px] lg:hidden">
           {navLinks.map((link) => {
             const Icon = link.icon;
             const isActive = pathname === link.href;
@@ -244,7 +285,7 @@ export function Header() {
               </Link>
             );
           })}
-        </div>
+        </nav>
       </header>
 
       <ApiKeyModal isOpen={isKeyModalOpen} onClose={() => setIsKeyModalOpen(false)} />

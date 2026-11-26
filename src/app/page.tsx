@@ -70,7 +70,7 @@ export default function DashboardPage() {
             <span className="text-[#2200ff]">inversion</span> intelligence.
           </h1>
 
-          <p className="text-[16px] sm:text-[17px] leading-[1.5] text-[#7d7d7d] max-w-2xl mx-auto">
+          <p className="text-[16px] sm:text-[17px] leading-[1.5] text-[#666666] max-w-2xl mx-auto">
             Time outdoor errands around thermal inversion cycles, size a low-cost DIY air purifier, and cut household PM2.5 exposure during severe episodes.
           </p>
 
@@ -102,7 +102,7 @@ export default function DashboardPage() {
       <section id="live-telemetry" className="space-y-9 scroll-mt-20">
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-black/10 pb-5">
           <div className="space-y-2">
-            <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+            <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#666666] font-normal">
               Real-Time Basin Readings
             </p>
             <h2 className="text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.16] tracking-[-0.04em] font-medium text-[#141414]">
@@ -142,7 +142,7 @@ export default function DashboardPage() {
       {/* Feature Bento Grid */}
       <section className="space-y-6">
         <div className="space-y-2">
-          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#666666] font-normal">
             Evidence-Based Protection
           </p>
           <h2 className="text-[32px] sm:text-[44px] leading-[1.16] tracking-[-0.04em] font-medium text-[#141414]">
@@ -156,7 +156,7 @@ export default function DashboardPage() {
       {/* Household & Community Action Tools */}
       <section className="space-y-6 pb-4">
         <div className="space-y-1">
-          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#666666] font-normal">
             Action Modules
           </p>
           <h2 className="text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414]">
@@ -173,16 +173,16 @@ export default function DashboardPage() {
             >
               <div className="flex items-start gap-4">
                 <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
-                  <Shield className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                  <Shield className="w-5 h-5 text-[#666666] group-hover:text-[#2200ff] transition-colors" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
                       Personalized Low-Emission Daily Routine
                     </h3>
-                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#666666] group-hover:text-[#2200ff] transition-colors shrink-0" />
                   </div>
-                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                  <p className="text-[15px] text-[#666666] leading-[1.5]">
                     Stagger departure times around morning radiation inversions. Tailored for family members with asthma, infants, school transit, and cooking setups.
                   </p>
                   <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
@@ -198,17 +198,17 @@ export default function DashboardPage() {
             >
               <div className="flex items-start gap-4">
                 <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
-                  <Layers className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                  <Layers className="w-5 h-5 text-[#666666] group-hover:text-[#2200ff] transition-colors" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
                       DIY Corsi-Rosenthal Purifier Calculator
                     </h3>
-                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#666666] group-hover:text-[#2200ff] transition-colors shrink-0" />
                   </div>
-                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
-                    Compute room CADR requirements (L × W × H) and construct a $30 box fan air cleaner that matches commercial $350 HEPA units.
+                  <p className="text-[15px] text-[#666666] leading-[1.5]">
+                    Compute room CADR requirements (L × W × H) and construct a ₹2,500 box fan air cleaner that matches commercial ₹25,000 HEPA units.
                   </p>
                   <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
                     Calculate Room Sizing
@@ -226,16 +226,16 @@ export default function DashboardPage() {
             >
               <div className="flex items-start gap-4">
                 <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
-                  <HeartHandshake className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                  <HeartHandshake className="w-5 h-5 text-[#666666] group-hover:text-[#2200ff] transition-colors" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
                       Community Action &amp; Advocacy Hub
                     </h3>
-                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#666666] group-hover:text-[#2200ff] transition-colors shrink-0" />
                   </div>
-                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                  <p className="text-[15px] text-[#666666] leading-[1.5]">
                     Pledge neighborhood pacts: school gate anti-idling, guard heating protocols, and ready-to-send RWA notices.
                   </p>
                   <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
@@ -251,16 +251,16 @@ export default function DashboardPage() {
             >
               <div className="flex items-start gap-4">
                 <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
-                  <MessageSquare className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                  <MessageSquare className="w-5 h-5 text-[#666666] group-hover:text-[#2200ff] transition-colors" />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
                       Clean Air Question &amp; Answer
                     </h3>
-                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                    <ArrowRight className="w-4 h-4 text-[#666666] group-hover:text-[#2200ff] transition-colors shrink-0" />
                   </div>
-                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                  <p className="text-[15px] text-[#666666] leading-[1.5]">
                     Consult scientific answers on N95 fitting, air conditioner fan modes, infant precautions, and indoor plants reality.
                   </p>
                   <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">

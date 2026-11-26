@@ -31,18 +31,18 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-2">
-            <CloudFog className="w-5 h-5 text-[#7d7d7d]" />
+            <CloudFog className="w-5 h-5 text-[#666666]" />
             <h3 className="text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
               Hourly Radiation Inversion Analysis
             </h3>
           </div>
-          <p className="text-[14px] text-[#7d7d7d] mt-0.5">
+          <p className="text-[14px] text-[#666666] mt-0.5">
             Predicting ground boundary layer trapping versus solar convective air dispersion
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[12px] text-[#7d7d7d]">Atmospheric Trapping:</span>
+          <span className="text-[12px] text-[#666666]">Atmospheric Trapping:</span>
           <span className="px-2.5 py-0.5 rounded-[2px] text-[12px] font-mono-tech bg-[#141414] text-white">
             {inversion.inversionStrength}
           </span>
@@ -60,7 +60,7 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
           <div className="text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414] font-mono-tech tabular-nums">
             {inversion.safeWindowStart} to {inversion.safeWindowEnd}
           </div>
-          <p className="text-[13px] text-[#7d7d7d] leading-[1.5]">
+          <p className="text-[13px] text-[#666666] leading-[1.5]">
             Surface solar heating temporarily breaks the nocturnal inversion lid. Trapped smoke dilutes upward.{' '}
             <span className="text-[#141414] font-medium">Safest window for errands and airing out rooms.</span>
           </p>
@@ -82,7 +82,7 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
               </span>
             ))}
           </div>
-          <p className="text-[13px] text-[#7d7d7d] leading-[1.5]">
+          <p className="text-[13px] text-[#666666] leading-[1.5]">
             Nocturnal radiational cooling traps 100% of vehicular and heating smoke within 50 meters of the surface.{' '}
             <span className="text-[#141414] font-medium">Avoid morning exercise outdoors.</span>
           </p>
@@ -91,7 +91,7 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
 
       {/* 24-Hour Timeline */}
       <div className="space-y-2.5">
-        <div className="flex flex-col gap-2 text-[12px] text-[#7d7d7d] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 text-[12px] text-[#666666] sm:flex-row sm:items-center sm:justify-between">
           <span className="flex items-center gap-1.5 font-medium text-[#141414]">
             <Clock className="w-3.5 h-3.5 text-[#2200ff]" /> Hourly Forecast Timeline
           </span>
@@ -105,7 +105,7 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
           </div>
         </div>
 
-        <div className="overflow-x-auto pb-2">
+        <div className="overflow-x-auto pb-2" tabIndex={0} role="region" aria-label="Hourly forecast">
           <div className="flex gap-1.5 min-w-[620px]">
             {hourly.slice(0, 16).map((hData, idx) => {
               const isSafe = hData.isSafeWindow;
@@ -123,13 +123,13 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
                   key={idx}
                   className={`flex-1 p-2 rounded-[8px] border text-center transition-colors ${style}`}
                 >
-                  <div className={`text-[10px] font-mono-tech ${isDanger ? 'text-[#e7e7e7]' : 'text-[#7d7d7d]'}`}>
+                  <div className={`text-[10px] font-mono-tech ${isDanger ? 'text-[#e7e7e7]' : 'text-[#666666]'}`}>
                     {formatHour(hData.hour)}
                   </div>
                   <div className="text-[12px] font-medium font-mono-tech tabular-nums mt-0.5">
                     {hData.usAqi}
                   </div>
-                  <div className={`text-[10px] font-mono-tech tabular-nums mt-0.5 ${isDanger ? 'text-[#e7e7e7]/80' : 'text-[#7d7d7d]'}`}>
+                  <div className={`text-[10px] font-mono-tech tabular-nums mt-0.5 ${isDanger ? 'text-[#e7e7e7]/80' : 'text-[#666666]'}`}>
                     {hData.pm25}µg
                   </div>
                 </div>
@@ -140,7 +140,7 @@ export function InversionWindowCard({ inversion, hourly, loading }: InversionWin
       </div>
 
       {/* Explanation Footnote */}
-      <div className="p-3.5 panel-inset text-[13px] text-[#7d7d7d] flex items-start gap-2.5">
+      <div className="p-3.5 panel-inset text-[13px] text-[#666666] flex items-start gap-2.5">
         <Info className="w-4 h-4 text-[#2200ff] shrink-0 mt-0.5" />
         <p className="leading-[1.5]">
           {inversion.explanation}

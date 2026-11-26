@@ -152,7 +152,7 @@ What questions can I address for your household today?`,
             <h1 className="text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414]">
               Air Quality <span className="text-[#2200ff]">Advisor</span>
             </h1>
-            <p className="text-[14px] text-[#7d7d7d] mt-0.5">
+            <p className="text-[14px] text-[#666666] mt-0.5">
               Environmental engineering, aerosol science, and pediatric pulmonary health guidance
             </p>
           </div>
@@ -162,12 +162,12 @@ What questions can I address for your household today?`,
             aria-label="Configure API settings"
             className="btn-outlined inline-flex min-h-11 items-center gap-1.5 text-[14px] focus-ring self-start sm:self-auto lg:min-h-0"
           >
-            <SlidersHorizontal className="w-3.5 h-3.5 text-[#7d7d7d]" />
+            <SlidersHorizontal className="w-3.5 h-3.5 text-[#666666]" />
             <span>Model Settings</span>
           </button>
         </div>
 
-        <div className="flex-1 overflow-y-auto space-y-4 p-4 sm:p-5 rounded-[16px] card-base">
+        <div data-lenis-prevent tabIndex={0} role="log" aria-label="Conversation" className="flex-1 overflow-y-auto space-y-4 p-4 sm:p-5 rounded-[16px] card-base">
           {messages.map((msg) => {
             const isUser = msg.role === 'user';
             return (
@@ -193,7 +193,7 @@ What questions can I address for your household today?`,
                   <div className="whitespace-pre-wrap">{msg.content}</div>
 
                   {!isUser && (
-                    <div className="pt-2 border-t border-black/10 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#7d7d7d]">
+                    <div className="pt-2 border-t border-black/10 flex flex-wrap items-center justify-between gap-2 text-[12px] text-[#666666]">
                       <div className="font-mono-tech text-[#2200ff]">
                         Engine:{' '}
                         {msg.providerUsed === 'gemini'
@@ -205,7 +205,7 @@ What questions can I address for your household today?`,
 
                       {msg.citations && msg.citations.length > 0 && (
                         <div className="flex items-center gap-1">
-                          <BookOpen className="w-3 h-3 text-[#7d7d7d]" />
+                          <BookOpen className="w-3 h-3 text-[#666666]" />
                           <span>{msg.citations.join('·')}</span>
                         </div>
                       )}
@@ -221,7 +221,7 @@ What questions can I address for your household today?`,
               <div className="w-7 h-7 rounded-[2px] bg-[#141414] flex items-center justify-center text-white shrink-0">
                 <MessageSquare className="w-4 h-4" />
               </div>
-              <div className="p-4 rounded-[12px] bg-[#f7f6f5] border border-black/10 text-[14px] text-[#7d7d7d] flex items-center gap-2">
+              <div className="p-4 rounded-[12px] bg-[#f7f6f5] border border-black/10 text-[14px] text-[#666666] flex items-center gap-2">
                 <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#2200ff]" />
                 <span>Generating guidance from atmospheric evidence...</span>
               </div>
@@ -232,7 +232,7 @@ What questions can I address for your household today?`,
 
         {!messages.some((msg) => msg.role === 'user') && (
           <div className="shrink-0 flex flex-wrap items-center gap-2">
-            <span className="text-[11px] uppercase tracking-wider text-[#7d7d7d] shrink-0">
+            <span className="text-[11px] uppercase tracking-wider text-[#666666] shrink-0">
               Try
             </span>
             {PROMPT_SUGGESTIONS.map((sugg) => (
@@ -263,7 +263,7 @@ What questions can I address for your household today?`,
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask about inversion safe windows, DIY purifiers, mask seals, or cooking..."
-              className="min-w-0 flex-1 px-4 py-2.5 input-base text-[16px] placeholder-[#7d7d7d] focus-ring transition-colors"
+              className="min-w-0 flex-1 px-4 py-2.5 input-base text-[16px] placeholder-[#666666] focus-ring transition-colors"
             />
             <button
               type="submit"

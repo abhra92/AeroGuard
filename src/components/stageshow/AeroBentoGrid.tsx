@@ -115,7 +115,7 @@ export function AeroBentoGrid({ theme = 'dark' }: AeroBentoGridProps) {
         <div className="ag-bento-stat-wrap">
           <span className="ag-bento-stat-lead">DIY Build Cost</span>
           <Stage
-            width={220}
+            width={240}
             height={64}
             theme="dark"
             initial={before}
@@ -125,11 +125,11 @@ export function AeroBentoGrid({ theme = 'dark' }: AeroBentoGridProps) {
           >
             {(s) => (
               <div className="ag-bento-stat-num">
-                <Count value={s.on ? 30 : 350} format={(n) => `$${n}`} />
+                <Count role="img" value={s.on ? 2500 : 25000} format={(n) => `₹${n.toLocaleString('en-IN')}`} />
               </div>
             )}
           </Stage>
-          <span className="ag-bento-stat-sub">vs. $350 retail HEPA purifier</span>
+          <span className="ag-bento-stat-sub">vs. ₹25,000 retail HEPA purifier</span>
         </div>
       </section>
 
@@ -155,7 +155,7 @@ export function AeroBentoGrid({ theme = 'dark' }: AeroBentoGridProps) {
                     <Text className="text-[12px] font-semibold block">Stagger School Transit</Text>
                     <Text className="text-[11px] opacity-65">Depart after 9:30 AM</Text>
                   </div>
-                  <Toggle on={s.on} />
+                  <Toggle on={s.on} aria-label="Stagger school transit" />
                 </div>
                 <div className="ag-bento-control-row">
                   <Bar w={64} h={6} tone={2} />

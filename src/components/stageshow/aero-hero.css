@@ -2,6 +2,8 @@
 .ag-hero-stage {
   width: 100%;
   max-width: 720px;
+  /* The stage sizes itself after first paint; keep that brief over-width frame inside the card. */
+  overflow-x: clip;
 }
 
 .ag-hero-stage .ss-stage {
@@ -61,7 +63,7 @@
   border-radius: 2px;
   font-size: 11px;
   font-weight: 400;
-  color: #7d7d7d;
+  color: #666666;
 }
 
 .ag-hero-nav-item[data-active="true"] {
@@ -143,7 +145,7 @@
 
 .ag-hero-desc {
   font-size: 11px;
-  color: #7d7d7d;
+  color: #666666;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -202,11 +204,23 @@
 
 .ag-hero-sat-unit {
   font-size: 10px;
-  color: #7d7d7d;
+  color: #666666;
 }
 
 .ag-hero-sat-foot {
   font-size: 10px;
-  color: #7d7d7d;
+  color: #666666;
   line-height: 1.35;
+}
+
+/* WCAG AA contrast: darker badge/url text than the kit defaults (vendored kit left untouched). */
+:is(.ag-hero-stage, .ag-bento) .ss-stage,
+:is(.ag-hero-stage, .ag-bento).ss-stage {
+  --ss-success-text: #14532d;
+  --ss-warning-text: #7c2d12;
+  --ss-danger-text: #991b1b;
+  --ss-accent-text: #1d1db0;
+}
+:is(.ag-hero-stage, .ag-bento) .ss-window__url {
+  color: #595959;
 }
