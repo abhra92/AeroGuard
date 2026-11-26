@@ -1,0 +1,199 @@
+/* AeroGuard Stageshow Feature Bento Grid — DESIGN.md */
+.ag-bento {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.ag-bento-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: #efefef;
+  padding: 20px 20px 0;
+  overflow: hidden;
+  min-height: 256px;
+  box-shadow: none;
+}
+
+.ag-bento-tile--wide {
+  grid-column: span 1;
+}
+
+/* Dark Bento Feature Card: Graphite (#1f1f1f), Mist (#e7e7e7), 16px radius, no shadow */
+.ag-bento-tile--accent {
+  background: #1f1f1f;
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #e7e7e7;
+  padding-bottom: 20px;
+}
+
+.ag-bento-copy {
+  font-size: 15px;
+  line-height: 1.45;
+  color: #7d7d7d;
+  margin-bottom: 14px;
+}
+
+.ag-bento-copy strong {
+  color: #141414;
+  font-weight: 500;
+}
+
+.ag-bento-tile--accent .ag-bento-copy {
+  color: #7d7d7d;
+}
+
+.ag-bento-tile--accent .ag-bento-copy strong {
+  color: #e7e7e7;
+}
+
+/* Picture slot pinned to bottom edge */
+.ag-bento-picture {
+  margin-top: auto;
+  margin-left: -20px;
+  margin-right: -20px;
+}
+
+.ag-bento-picture .ss-stage {
+  background: transparent;
+}
+
+/* Tile 1: Inversion Radar window crop */
+.ag-bento-win {
+  position: absolute;
+  left: 20px;
+  top: 6px;
+  width: calc(100% - 40px);
+  height: 196px;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.ag-bento-radar-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.ag-bento-radar-row {
+  display: grid;
+  grid-template-columns: 68px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ag-bento-radar-row:last-child {
+  border-bottom: none;
+}
+
+/* Tile 2: Big stat */
+.ag-bento-stat-wrap {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-top: 8px;
+}
+
+.ag-bento-stat-lead {
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #e7e7e7;
+}
+
+.ag-bento-stat-num {
+  font-size: 56px;
+  font-weight: 500;
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.ag-bento-stat-sub {
+  font-size: 12px;
+  color: #7d7d7d;
+  margin-top: 4px;
+}
+
+/* Tile 3: Routine component */
+.ag-bento-control-card {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 12px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #f7f6f5;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ag-bento-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Tile 4: Indoor Exposure Diagram */
+.ag-bento-bars {
+  position: absolute;
+  left: 20px;
+  right: 20px;
+  top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.ag-bento-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ag-bento-bar-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 500;
+  color: #141414;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tile 5: Community Pacts Collection */
+.ag-bento-chips {
+  position: absolute;
+  left: 20px;
+  top: 12px;
+  width: 100%;
+  max-width: 21.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (min-width: 640px) {
+  .ag-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ag-bento-tile--wide {
+    grid-column: span 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .ag-bento {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

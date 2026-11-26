@@ -1,26 +1,219 @@
 @import "tailwindcss";
 
+@theme {
+  /* Colors */
+  --color-paper: #f7f6f5;
+  --color-carbon: #141414;
+  --color-tile-gray: #efefef;
+  --color-mist: #e7e7e7;
+  --color-graphite: #1f1f1f;
+  --color-steel: #7d7d7d;
+  --color-white: #ffffff;
+  --color-electric-blue: #2200ff;
+
+  /* Typography */
+  --font-nbinternationalpro: var(--font-inter), 'nbInternationalPro', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-geistmono: var(--font-plex-mono), 'geistMono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 5px;
+  --radius-lg: 7.2px;
+  --radius-lg-2: 10px;
+  --radius-2xl: 16px;
+  --radius-full: 200px;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+  /* DESIGN.md Tokens */
+  --color-paper: #f7f6f5;
+  --color-carbon: #141414;
+  --color-tile-gray: #efefef;
+  --color-mist: #e7e7e7;
+  --color-graphite: #1f1f1f;
+  --color-steel: #7d7d7d;
+  --color-white: #ffffff;
+  --color-electric-blue: #2200ff;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --divider: rgba(0, 0, 0, 0.1);
+  --background: #f7f6f5;
+  --foreground: #141414;
+  --surface: #f7f6f5;
+  --surface-muted: #efefef;
+  --surface-inset: #e7e7e7;
+  --border: rgba(0, 0, 0, 0.1);
+  --card-bg: #efefef;
+  --card-border: rgba(0, 0, 0, 0.1);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Typography Scale */
+  --text-micro: 11px;
+  --leading-micro: 1.2;
+  --text-nav: 14px;
+  --leading-nav: 1.4;
+  --text-code: 15px;
+  --leading-code: 1.5;
+  --text-body-strong: 15px;
+  --text-body: 16px;
+  --leading-body: 1.5;
+  --text-body-large: 17px;
+  --text-eyebrow: 21px;
+  --text-heading-small: 24px;
+  --leading-heading-small: 1.27;
+  --tracking-heading-small: -0.48px;
+  --text-heading-inverse: 26px;
+  --leading-heading-inverse: 1.25;
+  --text-display: 64px;
+  --leading-display: 1.16;
+  --tracking-display: -2.56px;
+  --text-hero-display: 70px;
+  --leading-hero-display: 1;
+  --tracking-hero-display: -2.8px;
+
+  /* Named Radii */
+  --radius-cards: 16px;
+  --radius-links: 2px;
+  --radius-pills: 200px;
+  --radius-buttons: 2px;
+  --radius-accentedcontrols: 7.2px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-carbon);
+  font-family: var(--font-nbinternationalpro);
+  font-weight: 400;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-mono-tech {
+  font-family: var(--font-geistmono);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Flat Tile Gray surface with 16px radius and 1px hairline divider */
+.card-base {
+  background-color: var(--color-tile-gray);
+  border: 1px solid var(--divider);
+  border-radius: var(--radius-cards);
+  box-shadow: none;
+}
+
+/* Dark Graphite bento surface */
+.card-graphite {
+  background-color: var(--color-graphite);
+  color: var(--color-mist);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-cards);
+  box-shadow: none;
+}
+
+/* Subdued Mist inset module */
+.panel-inset {
+  background-color: var(--color-paper);
+  border: 1px solid var(--divider);
+  border-radius: 10px;
+}
+
+.input-base {
+  background-color: var(--color-white);
+  border: 1px solid var(--divider);
+  border-radius: 2px;
+  color: var(--color-carbon);
+}
+
+/* DESIGN.md Global Navigation Bar */
+.header-bar {
+  background-color: var(--color-paper);
+  border-bottom: 1px solid var(--divider);
+}
+
+/* DESIGN.md Buttons */
+.btn-carbon {
+  background-color: var(--color-carbon);
+  color: var(--color-white);
+  border: 1px solid var(--color-carbon);
+  border-radius: var(--radius-buttons);
+  padding: 6px 12px 5px;
+  font-weight: 400;
+  transition: opacity 0.15s ease;
+}
+
+.btn-carbon:hover:not(:disabled) {
+  opacity: 0.86;
+}
+
+.btn-outlined {
+  background-color: transparent;
+  color: var(--color-carbon);
+  border: 1px solid var(--color-carbon);
+  border-radius: var(--radius-buttons);
+  padding: 6px 8px 5px 12px;
+  font-weight: 400;
+  transition: background-color 0.15s ease;
+}
+
+.btn-outlined:hover:not(:disabled) {
+  background-color: var(--color-tile-gray);
+}
+
+.btn-pill {
+  background-color: transparent;
+  color: var(--color-carbon);
+  border: 1px solid var(--color-carbon);
+  border-radius: var(--radius-pills);
+  padding: 6px 12px 5px;
+  font-weight: 400;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.btn-pill:hover:not(:disabled) {
+  background-color: var(--color-tile-gray);
+}
+
+.btn-electric {
+  background-color: var(--color-electric-blue);
+  color: var(--color-white);
+  border: 1px solid var(--color-electric-blue);
+  border-radius: var(--radius-accentedcontrols);
+  padding: 6px 12px 5px;
+  font-weight: 400;
+  transition: opacity 0.15s ease;
+}
+
+.btn-electric:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+@media (max-width: 1023px) {
+  .btn-carbon,
+  .btn-outlined,
+  .btn-pill,
+  .btn-electric,
+  .input-base {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+/* Focus indicator */
+.focus-ring:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--color-paper), 0 0 0 4px var(--color-electric-blue);
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(20, 20, 20, 0.25);
+  border-radius: 9999px;
 }

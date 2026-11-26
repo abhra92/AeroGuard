@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AeroGuard
 
-## Getting Started
+AeroGuard helps households make practical decisions during periods of poor outdoor and indoor air quality. It combines local air-quality and weather data with a household profile, then offers exposure-reduction guidance, a daily routine, and a DIY air-cleaner sizing estimate.
 
-First, run the development server:
+## Challenge vertical and persona
+
+**Vertical:** Environmental health, focused on urban air-quality resilience.
+
+**Persona:** A household navigating pollution episodes, with particular attention to children, older adults, people with respiratory or cardiovascular vulnerabilities, and people who commute outdoors.
+
+## How it works
+
+1. **Check local conditions.** The dashboard requests current and hourly pollutant and weather readings from Open-Meteo. The app combines particulate readings, US AQI, temperature, and wind with simple time-of-day rules to flag periods that may have more pollution trapping or better dispersion.
+2. **Personalize recommendations.** A household profile records vulnerability factors and practical details such as commute mode. A deterministic rules engine uses that profile and the current AQI/PM2.5 context to generate a daily routine.
+3. **Plan indoor filtration.** The IAQ Lab estimates clean-air delivery and air changes for a Corsi-Rosenthal box using room dimensions and selected fan/filter assumptions.
+4. **Ask follow-up questions.** The assistant uses a configured Gemini provider first, then Groq, and finally a built-in rule-based response engine. The app remains usable without model-provider keys.
+5. **Track local actions.** Community pledges and household impact counters help users keep a personal checklist. They are stored in the browser and are not verified reports of community participation or measured exposure changes.
+
+## Features
+
+- Current and hourly air-quality and weather readings for supported locations
+- AQI category, pollutant details, and estimated inversion/dispersion windows
+- Household profile and daily routine recommendations
+- Corsi-Rosenthal box CADR and room air-change calculator
+- Air-quality assistant with optional Gemini and Groq integrations
+- Community advocacy templates and locally stored action tracking
+- Light and dark themes
+
+## Run locally
+
+Requirements: Node.js and npm.
 
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Live air-quality and weather data require an internet connection and are provided by Open-Meteo. No Open-Meteo API key is required. The built-in assistant works without any model API key.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+To enable a hosted language model, copy `.env.example` to `.env.local` and add a key for either provider:
 
-## Learn More
+```dotenv
+GEMINI_API_KEY=
+GROQ_API_KEY=
+```
 
-To learn more about Next.js, take a look at the following resources:
+These are optional server-side configuration values. Do not commit real keys. Users can also configure provider keys in the app; those values are saved in browser local storage and included in assistant requests. A request using a configured key sends the prompt and context to the selected external provider. Do not enter a personal key on a hosted instance unless you trust its operator.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Validation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm test        # Vitest unit tests for the decision logic
+npm run lint
+npm run build
+```
 
-## Deploy on Vercel
+Unit tests in `src/__tests__/` cover AQI category boundaries, inhaled-dose and avoided-exposure maths, commute emission savings, Corsi-Rosenthal CADR/ACH sizing, and profile-driven routine generation (risk escalation with AQI, child- and car-specific advice).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Security notes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- API routes validate input types and ranges (coordinates, AQI/PM2.5 values, string lengths). The assistant prompt is capped at 2,000 characters.
+- Error responses are generic and never expose internal error messages.
+- Server-side model keys are read from environment variables only and are never sent to the browser.
+- Vendored third-party UI code (`src/kit/`) is excluded from lint.
+
+## Project structure
+
+- `src/app/`: dashboard and feature pages, plus API route handlers
+- `src/components/`: shared interface components
+- `src/lib/open-meteo.ts`: external air-quality and weather data integration
+- `src/lib/heuristic-rules.ts`: routine generation, purifier estimates, and offline assistant responses
+- `src/lib/ai-providers.ts`: optional model-provider selection and offline fallback
+- `src/lib/store.ts`: browser-persisted preferences, profile, and action totals
+- `src/types/`: shared application data types
+
+## Assumptions and limitations
+
+- Air-quality and weather readings come from Open-Meteo; availability and freshness depend on that service and network access.
+- The inversion and safer-window indicators are simplified heuristics based on available forecast values and time of day. They are not direct atmospheric measurements, a guarantee of safe outdoor conditions, or a substitute for local official advisories.
+- Routine, filtration, and impact figures are estimates derived from application rules and nominal inputs. They are not laboratory measurements or evidence of an individual's health outcome.
+- This project is an educational decision-support tool, not medical advice. Follow local public-health guidance and consult a qualified clinician for personal medical decisions.
+- Profile settings, model keys, and action totals are stored in the current browser. There is no account system or shared community database.

@@ -1,69 +1,277 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useAppStore } from '@/lib/store';
+import { AirQualityResponse } from '@/types';
+import { AQICard } from '@/components/AQICard';
+import { InversionWindowCard } from '@/components/InversionWindowCard';
+import { ImpactCounter } from '@/components/ImpactCounter';
+import { AeroHeroDemo } from '@/components/stageshow/AeroHeroDemo';
+import { AeroBentoGrid } from '@/components/stageshow/AeroBentoGrid';
+import {
+  Shield,
+  Layers,
+  HeartHandshake,
+  MessageSquare,
+  RefreshCw,
+  AlertCircle,
+  ArrowRight,
+} from 'lucide-react';
+
+export default function DashboardPage() {
+  const { currentLocation } = useAppStore();
+  const [data, setData] = useState<AirQualityResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchAQI = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `/api/air-quality?lat=${currentLocation.lat}&lon=${currentLocation.lon}&city=${encodeURIComponent(
+          currentLocation.name
+        )}&country=${encodeURIComponent(currentLocation.country)}`
+      );
+      if (!res.ok) throw new Error('Failed to retrieve live atmospheric data');
+      const json = await res.json();
+      setData(json);
+    } catch (err: unknown) {
+      console.error(err);
+      const message = err instanceof Error ? err.message : 'Unable to load real-time air quality';
+      setError(message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Data fetch on location change; loading state is set intentionally before the request.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchAQI();
+  }, [currentLocation.lat, currentLocation.lon]);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
+    <div className="space-y-12 sm:space-y-16">
+      {/* Centered Editorial Hero on Paper (#f7f6f5) */}
+      <section className="pt-6 sm:pt-10 space-y-8">
+        <div className="max-w-4xl mx-auto text-center space-y-5">
+          <div className="inline-flex max-w-full flex-wrap items-center justify-center gap-2 px-3 py-1 rounded-[200px] border border-[#141414] text-[13px] text-center text-[#141414]">
+            <span className="w-2 h-2 rounded-full bg-[#2200ff]" />
+            <span>
+              Live Basin: <span className="font-medium">{currentLocation.name}</span>
+              {data ? ` · AQI ${data.current.usAqi}` : ''}
+            </span>
+          </div>
+
+          <h1 className="text-[42px] sm:text-[56px] lg:text-[70px] leading-[1.0] tracking-[-0.04em] font-medium text-[#141414]">
+            Navigate winter smog with{' '}
+            <span className="text-[#2200ff]">inversion</span> intelligence.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+
+          <p className="text-[16px] sm:text-[17px] leading-[1.5] text-[#7d7d7d] max-w-2xl mx-auto">
+            Time outdoor errands around thermal inversion cycles, size a low-cost DIY air purifier, and cut household PM2.5 exposure during severe episodes.
           </p>
+
+          {/* Hero Action Pair: Carbon Compact Button + Outlined Utility Button, 8px gap */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1">
+            <a
+              href="#live-telemetry"
+              className="btn-carbon inline-flex min-h-11 items-center gap-2 text-[16px] leading-[1.4] focus-ring lg:min-h-0"
+            >
+              <span>Inspect Live Telemetry</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+            <Link
+              href="/routines"
+              className="btn-outlined inline-flex min-h-11 items-center gap-2 text-[16px] leading-[1.4] focus-ring lg:min-h-0"
+            >
+              <span>Configure Daily Routine</span>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Broad Contained Product Workspace Preview */}
+        <div className="max-w-4xl mx-auto rounded-[16px] bg-[#efefef] border border-black/10 p-3 sm:p-5 flex justify-center">
+          <AeroHeroDemo theme="light" />
         </div>
-      </main>
+      </section>
+
+      {/* Live Atmospheric Telemetry */}
+      <section id="live-telemetry" className="space-y-9 scroll-mt-20">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-black/10 pb-5">
+          <div className="space-y-2">
+            <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+              Real-Time Basin Readings
+            </p>
+            <h2 className="text-[36px] sm:text-[52px] lg:text-[64px] leading-[1.16] tracking-[-0.04em] font-medium text-[#141414]">
+              Live station <span className="text-[#2200ff]">telemetry</span>
+            </h2>
+          </div>
+
+          <button
+            onClick={fetchAQI}
+            disabled={loading}
+            aria-label="Refresh atmospheric data"
+            className="btn-outlined inline-flex min-h-11 items-center gap-2 text-[14px] leading-[1.4] focus-ring self-start sm:self-auto lg:min-h-0"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin text-[#2200ff]' : ''}`} />
+            <span>Refresh Station Data</span>
+          </button>
+        </div>
+
+        {error && (
+          <div className="p-4 rounded-[16px] bg-[#efefef] border border-black/10 text-[#141414] text-[14px] flex items-center gap-2.5">
+            <AlertCircle className="w-4 h-4 shrink-0 text-[#2200ff]" />
+            <div>{error} (Operating in fallback telemetry mode).</div>
+          </div>
+        )}
+
+        <AQICard data={data} loading={loading} />
+
+        <InversionWindowCard
+          inversion={data ? data.inversion : null}
+          hourly={data ? data.hourly : []}
+          loading={loading}
+        />
+
+        <ImpactCounter />
+      </section>
+
+      {/* Feature Bento Grid */}
+      <section className="space-y-6">
+        <div className="space-y-2">
+          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+            Evidence-Based Protection
+          </p>
+          <h2 className="text-[32px] sm:text-[44px] leading-[1.16] tracking-[-0.04em] font-medium text-[#141414]">
+            Built on EPA, WHO, and UC Davis filtration science.
+          </h2>
+        </div>
+
+        <AeroBentoGrid theme="light" />
+      </section>
+
+      {/* Household & Community Action Tools */}
+      <section className="space-y-6 pb-4">
+        <div className="space-y-1">
+          <p className="text-[17px] sm:text-[21px] leading-[1.5] text-[#7d7d7d] font-normal">
+            Action Modules
+          </p>
+          <h2 className="text-[24px] leading-[1.27] tracking-[-0.48px] font-medium text-[#141414]">
+            Household &amp; Community Action Tools
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-12">
+          {/* Column 1 (7 cols) */}
+          <div className="lg:col-span-7 space-y-4">
+            <Link
+              href="/routines"
+              className="group p-5 rounded-[16px] card-base hover:border-[#141414]/40 block transition-colors focus-ring"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
+                  <Shield className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
+                      Personalized Low-Emission Daily Routine
+                    </h3>
+                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                  </div>
+                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                    Stagger departure times around morning radiation inversions. Tailored for family members with asthma, infants, school transit, and cooking setups.
+                  </p>
+                  <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
+                    Configure Household Schedule
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/iaq-lab"
+              className="group p-5 rounded-[16px] card-base hover:border-[#141414]/40 block transition-colors focus-ring"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
+                  <Layers className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
+                      DIY Corsi-Rosenthal Purifier Calculator
+                    </h3>
+                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                  </div>
+                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                    Compute room CADR requirements (L × W × H) and construct a $30 box fan air cleaner that matches commercial $350 HEPA units.
+                  </p>
+                  <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
+                    Calculate Room Sizing
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
+
+          {/* Column 2 (5 cols) */}
+          <div className="lg:col-span-5 space-y-4">
+            <Link
+              href="/community"
+              className="group p-5 rounded-[16px] card-base hover:border-[#141414]/40 block transition-colors focus-ring"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
+                  <HeartHandshake className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
+                      Community Action &amp; Advocacy Hub
+                    </h3>
+                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                  </div>
+                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                    Pledge neighborhood pacts: school gate anti-idling, guard heating protocols, and ready-to-send RWA notices.
+                  </p>
+                  <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
+                    View Local Pledges
+                  </span>
+                </div>
+              </div>
+            </Link>
+
+            <Link
+              href="/assistant"
+              className="group p-5 rounded-[16px] card-base hover:border-[#141414]/40 block transition-colors focus-ring"
+            >
+              <div className="flex items-start gap-4">
+                <div className="p-2.5 rounded-[10px] bg-[#f7f6f5] text-[#141414] border border-black/10 shrink-0">
+                  <MessageSquare className="w-5 h-5 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors" />
+                </div>
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <h3 className="min-w-0 break-words text-[20px] leading-[1.27] tracking-[-0.02em] font-medium text-[#141414]">
+                      Clean Air Question &amp; Answer
+                    </h3>
+                    <ArrowRight className="w-4 h-4 text-[#7d7d7d] group-hover:text-[#2200ff] transition-colors shrink-0" />
+                  </div>
+                  <p className="text-[15px] text-[#7d7d7d] leading-[1.5]">
+                    Consult scientific answers on N95 fitting, air conditioner fan modes, infant precautions, and indoor plants reality.
+                  </p>
+                  <span className="inline-block pt-1 text-[15px] text-[#2200ff] group-hover:underline">
+                    Ask a Question
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
