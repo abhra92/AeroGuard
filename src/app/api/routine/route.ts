@@ -1,38 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { generateHeuristicRoutine } from '@/lib/heuristic-rules';
-import { FamilyProfile } from '@/types';
+import { parseProfile, personalizeRoutine } from '@/lib/routine-personalizer';
+
+const optionalString = (v: unknown, max: number) => (typeof v === 'string' && v.length > 0 ? v.slice(0, max) : undefined);
+const reading = (v: unknown) => (typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1000 ? v : undefined);
 
 export async function POST(request: NextRequest) {
+  let body: Record<string, unknown>;
   try {
-    const body = await request.json();
-    const { profile, aqi, pm25, city } = body;
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
 
-    const currentProfile: FamilyProfile = profile || {
-      familyName: 'Family',
-      membersCount: 4,
-      vulnerabilities: ['infant_child'],
-      commuteMode: 'personal_car',
-      dailyCommuteKm: 15,
-      heatingSource: 'lpg_piped',
-      homeAreaSqFt: 1200,
-      hasAirPurifier: false,
-    };
+  const profile = parseProfile(body.profile);
+  const aqi = reading(body.aqi);
+  const pm25 = reading(body.pm25);
+  if (!profile || aqi === undefined || pm25 === undefined) {
+    return NextResponse.json({ error: 'A valid profile, aqi and pm25 are required' }, { status: 400 });
+  }
+  const city = optionalString(body.city, 100) ?? 'Your area';
 
-    const validNum = (v: unknown, fallback: number) =>
-      typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1000 ? v : fallback;
-    const currentAqi = validNum(aqi, 180);
-    const currentPm25 = validNum(pm25, 95);
-    const currentCity = typeof city === 'string' && city ? city.slice(0, 100) : 'Urban Area';
-
-    // Generate routine
-    const routine = generateHeuristicRoutine(currentProfile, currentAqi, currentPm25, currentCity);
-
+  try {
+    const plan = generateHeuristicRoutine(profile, aqi, pm25, city);
+    const routine = await personalizeRoutine(plan, profile, pm25, {
+      geminiKey: optionalString(body.geminiKey, 200),
+      groqKey: optionalString(body.groqKey, 200),
+    });
     return NextResponse.json(routine);
   } catch (error) {
     console.error('Routine generation error:', error);
-    return NextResponse.json(
-      { error: 'Failed to generate routine' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Failed to generate routine' }, { status: 500 });
   }
 }

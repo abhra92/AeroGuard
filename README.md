@@ -11,10 +11,11 @@ AeroGuard helps households make practical decisions during periods of poor outdo
 ## How it works
 
 1. **Check local conditions.** The dashboard requests current and hourly pollutant and weather readings from Open-Meteo. The app combines particulate readings, US AQI, temperature, and wind with simple time-of-day rules to flag periods that may have more pollution trapping or better dispersion.
-2. **Personalize recommendations.** A household profile records vulnerability factors and practical details such as commute mode. A deterministic rules engine uses that profile and the current AQI/PM2.5 context to generate a daily routine.
-3. **Plan indoor filtration.** The IAQ Lab estimates clean-air delivery and air changes for a Corsi-Rosenthal box using room dimensions and selected fan/filter assumptions.
-4. **Ask follow-up questions.** The assistant uses a configured Gemini provider first, then Groq, and finally a built-in rule-based response engine. The app remains usable without model-provider keys.
-5. **Track local actions.** Community pledges and household impact counters help users keep a personal checklist. They are stored in the browser and are not verified reports of community participation or measured exposure changes.
+2. **Personalize recommendations.** A household profile records vulnerability factors, commute mode and distance, cooking/heating source, and whether the home has a purifier. A deterministic rules engine combines that profile with the **live** AQI and PM2.5 for the selected city to build a daily routine. Each step's impact is calculated, not fixed: inhaled PM2.5 avoided (concentration × breathing rate × hours × mask penetration), its cigarette equivalent, and commute CO₂ saved. Each step explains the number in plain language.
+3. **GenAI explanation layer.** When a Gemini or Groq key is configured, `/api/routine` sends the computed plan and profile to the model. The model writes a household-specific headline and a "for your household" note for each step. The model only writes wording: its JSON reply is validated, every number still comes from the rules engine, and any unusable reply falls back to the rule-based text. The page shows which source wrote the text.
+4. **Plan indoor filtration.** The IAQ Lab estimates clean-air delivery and air changes for a Corsi-Rosenthal box using room dimensions and selected fan/filter assumptions.
+5. **Ask follow-up questions.** The assistant uses a configured Gemini provider first, then Groq, and finally a built-in rule-based response engine. The app remains usable without model-provider keys.
+6. **Track local actions.** Community pledges and household impact counters help users keep a personal checklist. They are stored in the browser and are not verified reports of community participation or measured exposure changes.
 
 ## Features
 

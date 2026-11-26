@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useAppStore } from '@/lib/store';
 import { DailyRoutinePlan, VulnerabilityFactor, CommuteMode, HeatingCookingSource } from '@/types';
-import { generateHeuristicRoutine } from '@/lib/heuristic-rules';
+import { useLiveConditions } from '@/lib/use-live-conditions';
 import {
   Clock,
   Users,
@@ -43,9 +43,11 @@ const HEATING_OPTIONS: { id: HeatingCookingSource; label: string }[] = [
 ];
 
 export default function RoutinePlannerPage() {
-  const { profile, updateProfile, currentLocation, addImpact } = useAppStore();
+  const { profile, updateProfile, currentLocation, addImpact, apiKeys } = useAppStore();
+  const conditions = useLiveConditions();
   const [plan, setPlan] = useState<DailyRoutinePlan | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [adopted, setAdopted] = useState(false);
 
   const toggleVulnerability = (id: VulnerabilityFactor) => {
@@ -56,14 +58,31 @@ export default function RoutinePlannerPage() {
     updateProfile({ vulnerabilities: updated });
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
+    if (conditions.aqi === undefined || conditions.pm25 === undefined) return;
     setLoading(true);
     setAdopted(false);
-    setTimeout(() => {
-      const res = generateHeuristicRoutine(profile, 185, 95, currentLocation.name);
-      setPlan(res);
+    setError(null);
+    try {
+      const res = await fetch('/api/routine', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          profile,
+          aqi: conditions.aqi,
+          pm25: conditions.pm25,
+          city: currentLocation.name,
+          geminiKey: apiKeys.geminiKey,
+          groqKey: apiKeys.groqKey,
+        }),
+      });
+      if (!res.ok) throw new Error('Could not generate a routine. Check the household details and try again.');
+      setPlan(await res.json());
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Could not generate a routine.');
+    } finally {
       setLoading(false);
-    }, 400);
+    }
   };
 
   const handleAdoptRoutine = () => {
@@ -227,10 +246,17 @@ export default function RoutinePlannerPage() {
         </div>
 
         {/* Generate Button */}
-        <div className="pt-4 border-t border-black/10 flex justify-end">
+        <div className="pt-4 border-t border-black/10 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-[13px] text-[#666666]" aria-live="polite">
+            {conditions.aqi !== undefined
+              ? <>Live conditions in {currentLocation.name}: <span className="font-medium text-[#141414]">AQI {conditions.aqi}</span>, PM2.5 {Math.round(conditions.pm25 ?? 0)} µg/m³</>
+              : conditions.error
+                ? 'Live air-quality data is unavailable, so a routine cannot be generated right now.'
+                : 'Loading live air quality…'}
+          </p>
           <button
             onClick={handleGenerate}
-            disabled={loading}
+            disabled={loading || conditions.aqi === undefined}
             className="btn-carbon inline-flex min-h-11 w-full items-center justify-center gap-2 text-[15px] leading-[1.4] focus-ring cursor-pointer sm:w-auto lg:min-h-0"
           >
             <CalendarCheck className="w-4 h-4" />
@@ -238,6 +264,10 @@ export default function RoutinePlannerPage() {
           </button>
         </div>
       </div>
+
+      {error && (
+        <p role="alert" className="text-[14px] text-[#991b1b]">{error}</p>
+      )}
 
       {/* Routine Display Area */}
       {plan && (
@@ -249,6 +279,9 @@ export default function RoutinePlannerPage() {
                   {plan.city}
                 </span>
                 <span className="text-[13px] text-[#666666] font-mono-tech">{plan.date}</span>
+                <span className="text-[12px] text-[#666666]">
+                  · {plan.provider === 'gemini' ? 'Personalized by Gemini' : plan.provider === 'groq' ? 'Personalized by GPT-OSS (Groq)' : 'Rule engine'}
+                </span>
               </div>
               <h3 className="text-[20px] font-medium text-[#141414] mt-1.5 tracking-[-0.02em]">
                 {plan.headlineSummary}
@@ -370,6 +403,12 @@ export default function RoutinePlannerPage() {
                     <div className="mt-2 text-[12px] text-[#666666]">
                       <span className="font-medium text-[#141414]">Impact:</span> {act.emissionImpact}
                     </div>
+
+                    {act.aiNote && (
+                      <p className="mt-2 text-[13px] text-[#141414] leading-[1.5] border-l-2 border-[#2200ff] pl-2.5">
+                        <span className="font-medium">For your household:</span> {act.aiNote}
+                      </p>
+                    )}
                   </div>
                 );
               })}

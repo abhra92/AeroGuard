@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useAppStore } from '@/lib/store';
+import { useLiveConditions } from '@/lib/use-live-conditions';
 import { ChatMessage } from '@/types';
 import {
   MessageSquare,
@@ -38,23 +39,7 @@ const PROMPT_SUGGESTIONS = [
 
 export default function AssistantPage() {
   const { currentLocation, apiKeys } = useAppStore();
-  const [conditions, setConditions] = useState<{ aqi?: number; pm25?: number }>({});
-
-  // Fetch live conditions so assistant answers reflect the selected city, not a fixed value.
-  useEffect(() => {
-    const controller = new AbortController();
-    const params = new URLSearchParams({
-      lat: String(currentLocation.lat),
-      lon: String(currentLocation.lon),
-      city: currentLocation.name,
-      country: currentLocation.country,
-    });
-    fetch(`/api/air-quality?${params}`, { signal: controller.signal })
-      .then((r) => (r.ok ? r.json() : null))
-      .then((d) => d?.current && setConditions({ aqi: d.current.usAqi, pm25: d.current.pm25 }))
-      .catch(() => {});
-    return () => controller.abort();
-  }, [currentLocation.lat, currentLocation.lon, currentLocation.name, currentLocation.country]);
+  const conditions = useLiveConditions();
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: 'welcome',
@@ -199,7 +184,7 @@ What questions can I address for your household today?`,
                         {msg.providerUsed === 'gemini'
                           ? 'Google Gemini 2.0 Flash'
                           : msg.providerUsed === 'groq'
-                          ? 'Groq Llama 3.3 70B'
+                          ? 'Groq GPT-OSS 120B'
                           : 'AeroGuard Scientific Engine'}
                       </div>
 

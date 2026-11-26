@@ -8,7 +8,12 @@ export interface AICompletionRequest {
   city?: string;
   geminiKey?: string;
   groqKey?: string;
+  /** Optional check on the reply; a provider whose reply fails it is skipped for the next one. */
+  accept?: (text: string) => boolean;
 }
+
+// Current models reason before answering, which uses output tokens, so leave room for both.
+const MAX_OUTPUT_TOKENS = 4096;
 
 export interface AICompletionResponse {
   text: string;
@@ -23,6 +28,7 @@ export async function generateAIResponse(req: AICompletionRequest): Promise<AICo
   const aqi = req.currentAqi || 180;
   const pm25 = req.currentPm25 || 90;
   const city = req.city || 'your area';
+  const accept = req.accept ?? ((text: string) => text.trim().length > 0);
 
   const baseSystemPrompt = req.systemInstruction || `
 You are AeroGuard AI, an expert environmental engineer and pediatric pulmonary health advisor specializing in urban winter smog, radiation temperature inversions, indoor air quality (IAQ) hacks, and sustainable low-emission daily routines.
@@ -35,10 +41,11 @@ Include specific numbers, avoided PM2.5 inhalation estimates, and clear bullet p
   if (geminiApiKey) {
     try {
       const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${geminiApiKey}`,
+        'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent',
         {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          // Key in a header, not the URL, so it stays out of logs and proxies.
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': geminiApiKey },
           body: JSON.stringify({
             contents: [
               {
@@ -48,7 +55,7 @@ Include specific numbers, avoided PM2.5 inhalation estimates, and clear bullet p
             ],
             generationConfig: {
               temperature: 0.7,
-              maxOutputTokens: 1200,
+              maxOutputTokens: MAX_OUTPUT_TOKENS,
             },
           }),
         }
@@ -56,12 +63,13 @@ Include specific numbers, avoided PM2.5 inhalation estimates, and clear bullet p
 
       if (response.ok) {
         const data = await response.json();
-        const candidateText = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (candidateText) {
+        const parts: { text?: string }[] = data.candidates?.[0]?.content?.parts ?? [];
+        const candidateText = parts.map((p) => p.text ?? '').join('');
+        if (accept(candidateText)) {
           return {
             text: candidateText,
             provider: 'gemini',
-            citations: ['Google Gemini 2.0 Flash (Free Tier)', 'Open-Meteo Atmospheric Reanalysis'],
+            citations: ['Google Gemini Flash (Free Tier)', 'Open-Meteo Atmospheric Reanalysis'],
           };
         }
       } else {
@@ -82,24 +90,25 @@ Include specific numbers, avoided PM2.5 inhalation estimates, and clear bullet p
           Authorization: `Bearer ${groqApiKey}`,
         },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',
+          model: 'openai/gpt-oss-120b',
           messages: [
             { role: 'system', content: baseSystemPrompt },
             { role: 'user', content: req.prompt },
           ],
           temperature: 0.7,
-          max_tokens: 1200,
+          max_tokens: MAX_OUTPUT_TOKENS,
+          reasoning_effort: 'low',
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        const text = data.choices?.[0]?.message?.content;
-        if (text) {
+        const text: string = data.choices?.[0]?.message?.content ?? '';
+        if (accept(text)) {
           return {
             text,
             provider: 'groq',
-            citations: ['Groq Llama 3.3 70B (Free Tier)', 'Open-Meteo Atmospheric Reanalysis'],
+            citations: ['Groq GPT-OSS 120B (Free Tier)', 'Open-Meteo Atmospheric Reanalysis'],
           };
         }
       }

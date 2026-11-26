@@ -106,7 +106,7 @@ export function ApiKeyModal({ isOpen, onClose }: ApiKeyModalProps) {
           <div>
             <div className="flex items-center justify-between mb-1">
               <label htmlFor="groq-key" className="text-[13px] font-medium text-[#141414]">
-                Groq API Key (Optional Llama 3.3 70B Free Tier)
+                Groq API Key (Optional GPT-OSS 120B Free Tier)
               </label>
               <a
                 href="https://console.groq.com/keys"

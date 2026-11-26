@@ -87,6 +87,8 @@ export interface RoutineActivity {
   riskLevel: 'safe' | 'caution' | 'danger';
   emissionImpact: string;
   pm25AvoidedUg: number;
+  /** Household-specific explanation written by the language model, when one is configured. */
+  aiNote?: string;
 }
 
 export interface DailyRoutinePlan {
@@ -99,6 +101,8 @@ export interface DailyRoutinePlan {
   totalPmAvoidedMicrograms: number;
   cigaretteEquivalenceAvoided: number;
   co2OffsetKg: number;
+  /** Who wrote the wording. Numbers always come from the rule engine. */
+  provider?: 'gemini' | 'groq' | 'heuristic';
 }
 
 export interface CorsiRosenthalConfig {

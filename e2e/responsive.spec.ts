@@ -73,3 +73,18 @@ test('mobile navigation is reachable at 375px', async ({ page }) => {
   await expect(page.getByRole('link', { name: /routines/i }).first()).toBeVisible();
   await expect(nav).toBeAttached();
 });
+
+test('routines use live air quality for the selected city', async ({ page }) => {
+  await page.route('**/api/air-quality**', async (route) => {
+    const real = await route.fetch();
+    const json = await real.json();
+    json.current = { ...json.current, usAqi: 287, pm25: 210 };
+    await route.fulfill({ response: real, json });
+  });
+  await page.goto('/routines');
+  await expect(page.getByText('AQI 287')).toBeVisible();
+  await page.getByRole('button', { name: /generate daily routine/i }).click();
+  await expect(page.getByText('210 µg/m³ outdoors').first()).toBeVisible();
+  // With model keys configured the label names the model; without, the rule engine.
+  await expect(page.getByText(/Rule engine|Personalized by/)).toBeVisible();
+});

@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAppStore } from '@/lib/store';
-import { AirQualityResponse } from '@/types';
+import { useLiveConditions } from '@/lib/use-live-conditions';
 import { AQICard } from '@/components/AQICard';
 import { InversionWindowCard } from '@/components/InversionWindowCard';
 import { ImpactCounter } from '@/components/ImpactCounter';
@@ -20,37 +19,8 @@ import {
 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { currentLocation } = useAppStore();
-  const [data, setData] = useState<AirQualityResponse | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchAQI = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const res = await fetch(
-        `/api/air-quality?lat=${currentLocation.lat}&lon=${currentLocation.lon}&city=${encodeURIComponent(
-          currentLocation.name
-        )}&country=${encodeURIComponent(currentLocation.country)}`
-      );
-      if (!res.ok) throw new Error('Failed to retrieve live atmospheric data');
-      const json = await res.json();
-      setData(json);
-    } catch (err: unknown) {
-      console.error(err);
-      const message = err instanceof Error ? err.message : 'Unable to load real-time air quality';
-      setError(message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // Data fetch on location change; loading state is set intentionally before the request.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchAQI();
-  }, [currentLocation.lat, currentLocation.lon]);
+    const { currentLocation } = useAppStore();
+  const { data, loading, error, refresh: fetchAQI } = useLiveConditions();
 
   return (
     <div className="space-y-12 sm:space-y-16">

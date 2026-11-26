@@ -1,5 +1,17 @@
 import { DailyRoutinePlan, FamilyProfile, CorsiRosenthalConfig, PurifierCalculation } from '@/types';
-import { calculateCommuteEmissionsSaved } from './impact-calculator';
+import { calculateAvoidedExposure, calculateCigaretteEquivalence, calculateCommuteEmissionsSaved } from './impact-calculator';
+
+type Activity = Parameters<typeof calculateAvoidedExposure>[3];
+type Mask = Parameters<typeof calculateAvoidedExposure>[4];
+
+/** Avoided PM2.5 for one routine step plus a plain-language explanation of where the number comes from. */
+function impactOf(outdoorPm25: number, mitigatedPm25: number, hours: number, activity: Activity, action: string, mask: Mask = 'none') {
+  const r = calculateAvoidedExposure(outdoorPm25, mitigatedPm25, hours, activity, mask);
+  return {
+    pm25AvoidedUg: r.avoidedUg,
+    explanation: `${action} avoids ~${r.avoidedUg} µg of inhaled PM2.5 (≈${r.cigarettesAvoided} cigarettes) at ${Math.round(outdoorPm25)} µg/m³ outdoors.`,
+  };
+}
 
 /**
  * Generates an optimized, low-emission daily routine tailored to the family's profile,
@@ -10,6 +22,19 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
   const isSevere = aqi > 250;
   const hasKids = profile.vulnerabilities.includes('infant_child');
 
+  // Assumed indoor/outdoor PM2.5 ratio for a closed home, lower with a running purifier.
+  const indoorPm25 = pm25 * (profile.hasAirPurifier ? 0.3 : 0.6);
+  // Car cabins on recirculation and metro carriages filter part of the outdoor PM2.5.
+  const enclosedCommute = profile.commuteMode === 'personal_car' || profile.commuteMode === 'metro_transit' || profile.commuteMode === 'carpool';
+
+  const morning = impactOf(pm25, indoorPm25, 1.5, 'moderate', 'Exercising indoors instead of an outdoor jog');
+  const commute = enclosedCommute
+    ? impactOf(pm25, pm25 * 0.5, 1, 'light', 'Recirculated cabin air plus an N95 for the walking legs', 'n95_respirator')
+    : impactOf(pm25, pm25, 1, 'moderate', 'Wearing a sealed N95 for the whole commute', 'n95_respirator');
+  const midday = impactOf(pm25, pm25 * 0.6, 1, 'light', 'Moving errands to the midday dispersion window');
+  const evening = impactOf(pm25, pm25 * 0.8, 1.5, 'light', 'Keeping 3-5 m back from curbside exhaust');
+  const dinner = impactOf(pm25, indoorPm25, 2, 'resting', profile.hasAirPurifier ? 'A closed, purified home in the evening' : 'A closed home with damp cleaning in the evening');
+
   const activities = [
     {
       timeSlot: '06:30 AM - 08:00 AM',
@@ -19,8 +44,8 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
         ? 'Ground Inversion Window: Avoid outdoor jogging or walks. Keep windows tightly shut. Switch kitchen cooking to electric kettle or induction rather than open flame to prevent indoor particulate buildup.'
         : 'Moderate morning air: Keep exterior doors closed to avoid street rush-hour exhaust.',
       riskLevel: isSevere ? ('danger' as const) : isHighSmog ? ('caution' as const) : ('safe' as const),
-      emissionImpact: 'Zero outdoor exposure during peak ground radiation inversion layer.',
-      pm25AvoidedUg: isHighSmog ? 180 : 45,
+      emissionImpact: morning.explanation,
+      pm25AvoidedUg: morning.pm25AvoidedUg,
     },
     {
       timeSlot: '08:15 AM - 09:15 AM',
@@ -36,8 +61,8 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
         return 'Wear an N95 respirator while walking to public transit. Metro train carriages have pressurized filtered air, significantly cleaner than road-level exhaust.';
       })(),
       riskLevel: isHighSmog ? ('caution' as const) : ('safe' as const),
-      emissionImpact: profile.commuteMode === 'personal_car' ? 'Anti-idling saves ~250g CO2 per 10 minutes.' : 'Public transit saves 75% emissions vs private drive.',
-      pm25AvoidedUg: isHighSmog ? 140 : 30,
+      emissionImpact: `${commute.explanation} ${profile.commuteMode === 'personal_car' ? 'Not idling also saves ~250 g CO2 per 10 minutes.' : 'Public transit emits ~75% less CO2 than driving.'}`,
+      pm25AvoidedUg: commute.pm25AvoidedUg,
     },
     {
       timeSlot: '12:45 PM - 03:30 PM',
@@ -47,8 +72,8 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
         ? 'Solar radiation has peaked, temporarily raising the thermal inversion ceiling. Safest window for necessary outdoor grocery runs. Brief 15-minute cross-ventilation acceptable only if indoor CO2 is elevated (>1200 ppm).'
         : 'Solar heating has dispersed the surface inversion layer. Safest time for outdoor errands, children recreation, or airing out rooms.',
       riskLevel: 'safe' as const,
-      emissionImpact: 'Optimizing errands into one consolidated midday trip eliminates cold-engine restarts.',
-      pm25AvoidedUg: 95,
+      emissionImpact: `${midday.explanation} One combined trip also avoids cold-engine restarts.`,
+      pm25AvoidedUg: midday.pm25AvoidedUg,
     },
     {
       timeSlot: '05:30 PM - 07:00 PM',
@@ -57,8 +82,8 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
       recommendation:
         'Traffic congestion peaks as the evening cooling re-establishes the smog boundary layer. Avoid arterial road bottlenecks. If walking near commercial intersections, stay 3-5 meters back from curb exhaust plumes.',
       riskLevel: isHighSmog ? ('caution' as const) : ('safe' as const),
-      emissionImpact: 'Staggering departure by 30 minutes reduces stop-and-go idle fuel burn by 22%.',
-      pm25AvoidedUg: 110,
+      emissionImpact: evening.explanation,
+      pm25AvoidedUg: evening.pm25AvoidedUg,
     },
     {
       timeSlot: '07:30 PM - 09:30 PM',
@@ -67,14 +92,13 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
       recommendation:
         'Cook with exhaust hoods running on high, lids securely on pots. Perform damp microfiber floor mopping instead of dry brooms (which aerosolize settled toxic particles). Place DIY or HEPA purifier in bedroom 45 minutes before sleep.',
       riskLevel: 'safe' as const,
-      emissionImpact: 'Damp cleaning eliminates secondary particle re-suspension by 85%.',
-      pm25AvoidedUg: 130,
+      emissionImpact: dinner.explanation,
+      pm25AvoidedUg: dinner.pm25AvoidedUg,
     },
   ];
 
   const totalPmAvoided = activities.reduce((acc, a) => acc + a.pm25AvoidedUg, 0);
-  const cigaretteEq = Number((totalPmAvoided / 528).toFixed(1));
-  const commuteSaved = calculateCommuteEmissionsSaved(profile.dailyCommuteKm || 15, 'car_to_metro');
+  const commuteSaved = calculateCommuteEmissionsSaved(profile.dailyCommuteKm, 'car_to_metro');
 
   return {
     date: new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' }),
@@ -87,8 +111,8 @@ export function generateHeuristicRoutine(profile: FamilyProfile, aqi: number, pm
       'Atmospheric cooling traps vehicle and biomass smoke near ground level between 6-9:30 AM and 8-11:30 PM. Keep vulnerable members indoors during these windows.',
     activities,
     totalPmAvoidedMicrograms: totalPmAvoided,
-    cigaretteEquivalenceAvoided: Math.max(0.5, cigaretteEq),
-    co2OffsetKg: commuteSaved?.co2SavedKg || 1.8,
+    cigaretteEquivalenceAvoided: calculateCigaretteEquivalence(totalPmAvoided),
+    co2OffsetKg: commuteSaved.co2SavedKg,
   };
 }
 
